@@ -61,7 +61,7 @@ type createOrderRequest struct {
 func (c *Client) CreateOrder(in *Order, accounts ...*CarrierAccount) (out *Order, err error) {
 	var req createOrderRequest
 	req.Order.Order, req.Order.CarrierAccounts = in, accounts
-	err = c.post(nil, "orders", &req, &out)
+	err = c.post(context.Background(), "orders", &req, &out)
 	return
 }
 
@@ -76,7 +76,7 @@ func (c *Client) CreateOrderWithContext(ctx context.Context, in *Order, accounts
 
 // GetOrder retrieves an existing Order object by ID.
 func (c *Client) GetOrder(orderID string) (out *Order, err error) {
-	err = c.get(nil, "orders/"+orderID, &out)
+	err = c.get(context.Background(), "orders/"+orderID, &out)
 	return
 }
 
@@ -89,7 +89,7 @@ func (c *Client) GetOrderWithContext(ctx context.Context, orderID string) (out *
 
 // GetOrderRates refreshes rates for an Order.
 func (c *Client) GetOrderRates(orderID string) (out *Order, err error) {
-	err = c.get(nil, "orders/"+orderID+"/rates", &out)
+	err = c.get(context.Background(), "orders/"+orderID+"/rates", &out)
 	return
 }
 
@@ -109,7 +109,7 @@ func (c *Client) BuyOrder(orderID, carrier, service string) (out *Order, err err
 		"carrier": []string{carrier},
 		"service": []string{service},
 	}
-	err = c.post(nil, "orders/"+orderID+"/buy", vals, &out)
+	err = c.post(context.Background(), "orders/"+orderID+"/buy", vals, &out)
 	return
 }
 
